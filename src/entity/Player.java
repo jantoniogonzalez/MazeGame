@@ -1,5 +1,6 @@
 package entity;
 
+import main.CollisionChecker;
 import main.Game;
 import main.KeyHandler;
 
@@ -17,37 +18,15 @@ public class Player extends Entity{
     public Player(Game gp ,KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
+        score = 0;
+        rrCollected = 0;
 
-        setDefaultValues();
+        setDefaultValues(100, 100, 5);
         getPlayerImage();
+
+        solidArea = new Rectangle(this.x+6, this.y+24, 33, 32);
     }
 
-    public void setDefaultValues(){
-
-        x = 100;
-        y = 100;
-        step = 5;
-        direction = "down";
-        animation = 1;
-        animationCounter = 0;
-
-    }
-
-    public void animationHandler(){
-
-        animationCounter++;
-
-        if(animationCounter <= 20){
-            animation = 1;
-        }
-        else if( animationCounter <= 40){
-            animation = 2;
-        }
-        else{
-            animationCounter = 0;
-        }
-
-    }
 
     public void getPlayerImage(){
         try {
@@ -65,23 +44,43 @@ public class Player extends Entity{
         }
     }
 
-    public void update(){
+    public void update(CollisionChecker collisionChecker){
 
         if(keyH.north){
             direction = "up";
-            y -= step;
         }
         else if(keyH.west){
             direction = "left";
-            x -= step;
         }
         else if(keyH.south){
             direction = "down";
-            y += step;
         }else if(keyH.east){
             direction = "right";
-            x += step;
         }
+
+        collisionChecker.checkTile(this);
+
+        if(!collision){
+            if(keyH.north){
+                direction = "up";
+                y -= step;
+            }
+            else if(keyH.west){
+                direction = "left";
+                x -= step;
+            }
+            else if(keyH.south){
+                direction = "down";
+                y += step;
+            }else if(keyH.east){
+                direction = "right";
+                x += step;
+            }
+
+        }
+
+        solidArea.x = x+6;
+        solidArea.y = y+24;
 
         animationHandler();
 

@@ -9,27 +9,27 @@ import java.awt.*;
 
 public class Game extends JPanel implements Runnable{
 
-    final int tileSizeX = 16;
+    final int tileSizeX = 15;
     final int tileSizeY = 22;
     final int scaled = 3;
     final int FPS = 60;
 
     public final int trueTileSizeX = tileSizeX * scaled;
     public final int trueTileSizeY = tileSizeY * scaled;
-    public final int columns = 18;
-    public final int rows = 14;
-    public final int screenWidth = trueTileSizeY * columns;
-    public final int screenHeight = trueTileSizeX * rows;
+    public final int columns = 24;
+    public final int rows = 12;
+    public final int screenWidth = trueTileSizeX * columns;
+    public final int screenHeight = trueTileSizeY * rows;
+
+    public boolean gameOver = false;
+    public boolean gameWon = false;
 
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     Player player = new Player(this, keyH);
+    CollisionChecker collisionChecker = new CollisionChecker(this);
     TileManager tM = new TileManager(this, 1);
     Enemy enemy = new Enemy(this);
-
-    int positionX = 100;
-    int positionY = 100;
-    int step = 5;
 
     public Game(){
 
@@ -49,10 +49,12 @@ public class Game extends JPanel implements Runnable{
     @Override
     public void run() {
 
-        double interval = 1000000000/FPS;
+        double interval = 1000000000.0/FPS;
         double nextReDraw = System.nanoTime() + interval;
 
-        while (gameThread != null) {
+
+
+        while (gameThread != null && !gameOver) {
 
             update();
 
@@ -79,8 +81,9 @@ public class Game extends JPanel implements Runnable{
 
     public void update(){
 
-        player.update();
+        player.update(collisionChecker);
         enemy.update(player);
+        tM.animationHandler(player);
 
     }
 
@@ -93,7 +96,35 @@ public class Game extends JPanel implements Runnable{
         player.draw(g2);
         enemy.draw(g2);
 
+        endGame(g2);
+
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("MV Boli", Font.PLAIN, 45));
+        g2.drawString(String.valueOf(player.score), 50, 50);
+
+
         g2.dispose();
     }
 
+    public void endGame(Graphics2D g2){
+        if(player.solidArea.intersects(enemy.solidArea)){
+            player.score -= 5000;
+            g2.setColor(Color.RED);
+            g2.setFont(new Font("MV Boli", Font.PLAIN, 75));
+            g2.drawString("GAME OVER", 300, 400);
+            gameOver = true;
+        }
+        else if(gameWon){
+            gameOver = true;
+            g2.setColor(Color.YELLOW);
+            g2.setFont(new Font("MV Boli", Font.PLAIN, 75));
+            g2.drawString("YOU WIN!", 300, 400);
+        }
+        else if(player.score < -100){
+            g2.setColor(Color.RED);
+            g2.setFont(new Font("MV Boli", Font.PLAIN, 75));
+            g2.drawString("GAME OVER", 300, 400);
+            gameOver = true;
+        }
+    }
 }

@@ -16,35 +16,10 @@ public class Enemy extends Entity{
     public Enemy(Game gp){
         this.gp = gp;
 
-        setDefaultValues();
+        setDefaultValues(400, 400, 2);
         getEnemyImage();
-    }
 
-    public void setDefaultValues(){
-
-        x = 300;
-        y = 300;
-        step = 1;
-        direction = "down";
-        animation = 1;
-        animationCounter = 0;
-
-    }
-
-    public void animationHandler(){
-
-        animationCounter++;
-
-        if(animationCounter <= 20){
-            animation = 1;
-        }
-        else if( animationCounter <= 40){
-            animation = 2;
-        }
-        else{
-            animationCounter = 0;
-        }
-
+        solidArea = new Rectangle(x + 5, y + 5, 35, 56);
     }
 
     public void getEnemyImage(){
@@ -87,6 +62,9 @@ public class Enemy extends Entity{
             direction = "right";
             x += step;
         }
+
+        solidArea.x = x + 5;
+        solidArea.y = y + 5;
 
         animationHandler();
 
