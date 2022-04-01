@@ -21,7 +21,7 @@ public class Player extends Entity{
         score = 0;
         rrCollected = 0;
 
-        setDefaultValues(100, 100, 5);
+        setDefaultValues(100, 100, 4);
         getPlayerImage();
 
         solidArea = new Rectangle(this.x+6, this.y+24, 33, 32);

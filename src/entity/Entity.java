@@ -41,7 +41,7 @@ public class Entity {
         }
         else{
             animationCounter = 0;
-            score -= 1;
+            score -= 5;
         }
 
     }
