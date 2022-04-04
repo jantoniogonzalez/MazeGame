@@ -1,5 +1,7 @@
 package entity;
 
+import main.Game;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -11,6 +13,8 @@ public class Entity {
     public int animationCounter;
     public int score;
     public int rrCollected;
+
+    Game gp;
 
     public Rectangle solidArea;
     public boolean collision = false;
@@ -46,4 +50,49 @@ public class Entity {
 
     }
 
+    public void draw(Graphics g2){
+
+        Color c = new Color(0, 0, 0, 0);
+
+        g2.setColor(c);
+        g2.fillRect(x, y, gp.trueTileSizeX, gp.trueTileSizeY);
+
+        BufferedImage image = null;
+
+        switch (direction){
+            case "up":
+                if(animation == 1) {
+                    image = up1;
+                }
+                else if(animation == 2){
+                    image = up2;
+                }
+                break;
+            case "left":
+                if(animation == 1) {
+                    image = left1;
+                }
+                else if(animation == 2){
+                    image = left2;
+                }
+                break;
+            case "down":
+                if(animation == 1) {
+                    image = down1;
+                }
+                else if(animation == 2){
+                    image = down2;
+                }
+                break;
+            case "right":
+                if(animation == 1) {
+                    image = right1;
+                }
+                else if(animation == 2){
+                    image = right2;
+                }
+                break;
+        }
+        g2.drawImage(image, x, y, gp.trueTileSizeX, gp.trueTileSizeY, null);
+    }
 }
