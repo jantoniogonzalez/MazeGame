@@ -19,14 +19,11 @@ public class Map {
                             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     };
 
-    Map(int num){
-        switch(num){
-            case 1:
-                this.map = map1;
-                numBR = 1;
-                numRR = 5;
-                numNR = 2;
-        }
+    Map(){
+        this.map = map1;
+        numBR = 1;
+        numRR = 5;
+        numNR = 2;
     }
 
 }

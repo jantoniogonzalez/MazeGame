@@ -26,9 +26,9 @@ public class TileManager {
     Tile waterTile1, waterTile2, wallTile1, wallTile2, endTile;
     public BufferedImage water1, water2, wall1, wall2, end;
 
-    public TileManager (Game panel, int num){
+    public TileManager (Game panel){
         this.panel = panel;
-        this.map = new Map(num);
+        this.map = new Map();
 
         arrBR = new BonusReward[map.numBR];
         arrRR = new RegularReward[map.numRR];
