@@ -17,6 +17,10 @@ public class KeyHandler implements KeyListener {
 
         int code = e.getKeyCode();
 
+        char keyChar = e.getKeyChar();
+        int id = e.getID();
+        System.out.println("Id is: "+id + " KeyChar is: "+ keyChar);
+
         if(code == KeyEvent.VK_W){
             System.out.println("North pressed");
             north = true;
@@ -41,6 +45,10 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
+
+        char keyChar = e.getKeyChar();
+        int id = e.getID();
+        System.out.println("Id released is: "+id + " KeyChar released is: "+ keyChar);
 
         if(code == KeyEvent.VK_W){
             north = false;

@@ -1,6 +1,7 @@
 package rewards;
 
 import entity.Player;
+import main.Game;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -10,7 +11,11 @@ public class Reward {
     public int animation;
     public int animationCounter;
     public boolean collected, isRegular;
-    public int value;
+    public int value, xOffSet, yOffSet, width, height;
+
+    Game gp;
+
+    public BufferedImage img1, img2;
 
     public Rectangle solidArea;
 
@@ -39,6 +44,31 @@ public class Reward {
             }
             collected = true;
             value = 0;
+        }
+    }
+
+    public void drawReward(Graphics g2, int rx, int ry){
+
+        if(!collected) {
+            Color c = new Color(0, 0, 0, 0);
+
+            g2.setColor(c);
+
+            g2.fillRect(rx, ry, gp.trueTileSizeX, gp.trueTileSizeY);
+
+            BufferedImage image;
+
+            solidArea.x = rx + xOffSet;
+            solidArea.y = ry + yOffSet;
+            solidArea.width = width;
+            solidArea.height = height;
+
+            if (animation == 1) {
+                image = img1;
+            } else {
+                image = img2;
+            }
+            g2.drawImage(image, rx, ry, gp.trueTileSizeX, gp.trueTileSizeY, null);
         }
     }
 }

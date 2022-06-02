@@ -1,6 +1,6 @@
 package main;
 
-import entity.Entity;
+import entity.Player;
 
 public class CollisionChecker {
 
@@ -10,7 +10,7 @@ public class CollisionChecker {
         this.gp = gp;
     }
 
-    public void checkTile(Entity entity){
+    public void checkTile(Player entity){
 
         int entityLeft = entity.solidArea.x;
         int entityTop = entity.solidArea.y;
@@ -22,63 +22,38 @@ public class CollisionChecker {
         double entityTopRow = Math.floor(entityTop/gp.trueTileSizeY) % gp.rows;
         double entityBottomRow = Math.floor(entityBottom/gp.trueTileSizeY) % gp.rows;
 
-        int tileNum1, tileNum2;
+        int tileNum1 =0, tileNum2=0;
 
-        switch(entity.direction){
-            case "up":
-                entityTopRow = Math.floor((entityTop-entity.step)/gp.trueTileSizeY) % gp.rows;
+        switch (entity.direction) {
+            case "up" -> {
+                entityTopRow = Math.floor((entityTop - entity.step) / gp.trueTileSizeY) % gp.rows;
                 tileNum1 = gp.tM.map.map[(int) entityTopRow][(int) entityLeftCol];
                 tileNum2 = gp.tM.map.map[(int) entityTopRow][(int) entityRightCol];
-                if(tileNum1 == 1 || tileNum2 == 1){
-                    entity.collision = true;
-                }
-                else{
-                    entity.collision = false;
-                }
-                break;
-            case "right":
-                entityRightCol = Math.floor((entityRight+entity.step)/gp.trueTileSizeX) % gp.columns;
+            }
+            case "right" -> {
+                entityRightCol = Math.floor((entityRight + entity.step) / gp.trueTileSizeX) % gp.columns;
                 tileNum1 = gp.tM.map.map[(int) entityTopRow][(int) entityRightCol];
                 tileNum2 = gp.tM.map.map[(int) entityBottomRow][(int) entityRightCol];
-                if(tileNum1 == 1 || tileNum2 == 1){
-                    entity.collision = true;
-                }
-                else if((tileNum1 == 7 || tileNum2 == 7) && checkGoalState(entity)){
-                    gp.gameWon = true;
-                }
-                else{
-                    entity.collision = false;
-                }
-                break;
-            case "down":
-                entityBottomRow = Math.floor((entityBottom+entity.step)/gp.trueTileSizeY) % gp.rows;
+            }
+            case "down" -> {
+                entityBottomRow = Math.floor((entityBottom + entity.step) / gp.trueTileSizeY) % gp.rows;
                 tileNum1 = gp.tM.map.map[(int) entityBottomRow][(int) entityRightCol];
                 tileNum2 = gp.tM.map.map[(int) entityBottomRow][(int) entityLeftCol];
-                if(tileNum1 == 1 || tileNum2 == 1){
-                    entity.collision = true;
-                }
-                else{
-                    entity.collision = false;
-                }
-                break;
-            case "left":
-                entityLeftCol = Math.floor((entityLeft-entity.step)/gp.trueTileSizeX) % gp.columns;
+            }
+            case "left" -> {
+                entityLeftCol = Math.floor((entityLeft - entity.step) / gp.trueTileSizeX) % gp.columns;
                 tileNum1 = gp.tM.map.map[(int) entityTopRow][(int) entityLeftCol];
                 tileNum2 = gp.tM.map.map[(int) entityBottomRow][(int) entityLeftCol];
-                if(tileNum1 == 1 || tileNum2 == 1){
-                    entity.collision = true;
-                }
-                else{
-                    entity.collision = false;
-                }
-                break;
+            }
+        }
+
+        entity.collision = tileNum1 == 1 || tileNum2 == 1;
+        if(tileNum1 == 7 || tileNum2 == 7){
+            gp.gameWon = checkGoalState(entity);
         }
     }
 
-    public boolean checkGoalState(Entity entity){
-        if(entity.rrCollected == gp.tM.map.numRR){
-            return true;
-        }
-        return false;
+    public boolean checkGoalState(Player p){
+        return p.rrCollected == gp.tM.map.numRR;
     }
 }

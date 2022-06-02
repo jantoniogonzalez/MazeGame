@@ -21,10 +21,8 @@ public class TileManager {
 
     public int animationCounter;
     boolean isWall1 = true;
-    boolean isWater1 = true;
 
-    Tile waterTile1, waterTile2, wallTile1, wallTile2, endTile;
-    public BufferedImage water1, water2, wall1, wall2, end;
+    public BufferedImage water, wall1, wall2, end;
 
     public TileManager (Game panel){
         this.panel = panel;
@@ -43,16 +41,10 @@ public class TileManager {
 
     public void getTileImage(){
         try{
-            water1 = ImageIO.read(new File("resources/tiles/Water_1.png"));
-            this.waterTile1 = new Tile(water1, false);
-            water2 = ImageIO.read(new File("resources/tiles/Water_2.png"));
-            this.waterTile2 = new Tile(water2, false);
+            water = ImageIO.read(new File("resources/tiles/Water_1.png"));
             wall1 = ImageIO.read(new File("resources/walls/Wall_1.png"));
-            this.wallTile1 = new Tile(wall1, true);
             wall2 = ImageIO.read(new File("resources/walls/Wall_2.png"));
-            this.wallTile2 = new Tile(wall2, true);
             end = ImageIO.read(new File("resources/tiles/Exit.png"));
-            this.endTile = new Tile(end, false);
 
         }catch(IOException e){
             e.printStackTrace();
@@ -95,20 +87,16 @@ public class TileManager {
             for(int j = 0; j < panel.columns; j++){
                 if(map.map[i][j]  == 1){ //wall
                     if(isWall1){
-                        g2.drawImage(wallTile1.image, j* panel.trueTileSizeX, i*panel.trueTileSizeY, panel.trueTileSizeX, panel.trueTileSizeY, null);
+                        g2.drawImage(wall1, j* panel.trueTileSizeX, i*panel.trueTileSizeY, panel.trueTileSizeX, panel.trueTileSizeY, null);
                     }else{
-                        g2.drawImage(wallTile2.image, j* panel.trueTileSizeX, i*panel.trueTileSizeY, panel.trueTileSizeX, panel.trueTileSizeY, null);
+                        g2.drawImage(wall2, j* panel.trueTileSizeX, i*panel.trueTileSizeY, panel.trueTileSizeX, panel.trueTileSizeY, null);
                     }
                 }
                 else if(map.map[i][j]  == 7){
-                    g2.drawImage(endTile.image, j* panel.trueTileSizeX, i*panel.trueTileSizeY, panel.trueTileSizeX, panel.trueTileSizeY, null);
+                    g2.drawImage(end, j* panel.trueTileSizeX, i*panel.trueTileSizeY, panel.trueTileSizeX, panel.trueTileSizeY, null);
                 }
                 else{ //water
-                    if(isWater1){
-                        g2.drawImage(waterTile1.image, j* panel.trueTileSizeX, i*panel.trueTileSizeY, panel.trueTileSizeX, panel.trueTileSizeY, null);
-                    }else{
-                        g2.drawImage(waterTile2.image, j* panel.trueTileSizeX, i*panel.trueTileSizeY, panel.trueTileSizeX, panel.trueTileSizeY, null);
-                    }
+                    g2.drawImage(water, j* panel.trueTileSizeX, i*panel.trueTileSizeY, panel.trueTileSizeX, panel.trueTileSizeY, null);
                     if(map.map[i][j]  == 2) {//regular reward
                         arrRR[rrCounter].drawReward(g2, j* panel.trueTileSizeX, i*panel.trueTileSizeY);
                         rrCounter ++;
